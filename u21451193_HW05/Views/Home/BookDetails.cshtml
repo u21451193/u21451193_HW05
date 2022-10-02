@@ -1,0 +1,72 @@
+﻿@model IEnumerable<u21451193_HW05.Models.Borrows>
+
+@{
+    ViewBag.Title = "BookDetails";
+}
+
+<h2>Book Details</h2>
+@{
+    // I don't even know but it works so I am leaving it like so :)
+    var bookName = "";
+    int count = 0;
+
+    foreach(var item in Model)
+    {
+        if (bookName.Equals(item.BookName))
+        {
+            bookName = item.BookName;
+            count++;
+        }
+        else
+        {
+            bookName = item.BookName;
+            count++;
+        }
+    }
+
+    
+
+} 
+
+<h3>@bookName</h3>
+
+<h4> # Borrows -   @count   <button type="button" class="btn btn-info pull-right">@Html.ActionLink("Students", "StudentIndex", "Home", new { @class = "text-primary" }, null)</button></h4> 
+
+<p>
+    
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BorrowsID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BorrowsTakenDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BorrowsBroughtDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StudentName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.BorrowsID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BorrowsTakenDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BorrowsBroughtDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StudentName)
+        </td>
+    </tr>
+}
+
+</table>

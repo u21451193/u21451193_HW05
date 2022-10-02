@@ -1,0 +1,116 @@
+﻿@model u21451193_HW05.Models.StudentVM
+
+@{
+    ViewBag.Title = "StudentIndex";
+
+}
+
+<h2>Students</h2>
+
+<table class="table">
+    <tr>
+        <th class="col-lg-3">
+            <div class="input-group">
+                <div class="form-outline">
+                    <input type="text" id="myInput" class="form-control" placeholder="Search Name" onkeyup="searchFunction()"/> 
+                </div>
+            </div>
+        </th>
+        <th class="col-lg-3">
+            <div class="dropdown">
+                <select class="form-control" id="StudentClass" name="StudentClass" placeholder="Class">
+                    <option value="All" disabled selected>Select class</option>
+                    @foreach (var item in Model.Students.Select(b => b.StudentClass).Distinct().OrderBy(x => x))
+                    {
+                        <option>@item</option>
+                    }
+                </select>
+            </div>
+        </th>
+        <th class="col-lg-3">
+            <button type="button" class="btn btn-success" onclick="ClassFilter()">
+                Search
+            </button>
+        </th>
+        <th class="col-lg-3">
+            <button type="button" class="btn btn-danger" onclick="clearAllFilters()">
+                Clear
+            </button>
+        </th>
+    </tr>
+</table>
+
+<table class="table" id="myTable">
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Class</th>
+        <th>Point</th>
+        <th>Borrow Book</th>
+    </tr>
+
+    @foreach (var item in Model.Students)
+    {
+        <tr>
+            <td>@item.StudentID</td>
+            <td>@item.StudentName</td>
+            <td>@item.StudentSurname</td>
+            <td>@item.StudentClass</td>
+            <td>@item.StudentPoint</td>
+            <td><button type="button" class="btn btn-info" onclick=" ">@Html.ActionLink("Borrow Book", "BookDetails", "Home", new { @class = "text-primary"})</button></td>
+        </tr>
+    }
+
+</table>
+
+<script>
+    function searchFunction() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function ClassFilter() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("StudentClass");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[3];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function clearAllFilters() {
+        document.getElementById("myInput").value = "";
+        document.getElementById("StudentClass").value = "All";
+        searchFunction();
+    }
+</script>

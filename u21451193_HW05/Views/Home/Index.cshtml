@@ -1,0 +1,153 @@
+﻿@model u21451193_HW05.Models.BooksVM
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Books</h2>
+
+<table class="table">
+    <tr>
+        <th class="col-lg-3">
+            <div class="input-group">
+                <div class="form-outline">
+                    <input type="text" id="myInput" class="form-control" placeholder="Search Book Name" onkeyup="searchFunction()"/>
+                </div>
+            </div>
+        </th>
+        <th class="col-lg-3">
+            <div class="dropdown">
+                <select class="form-control" id="BookType" name="BookType" placeholder="Type">
+                    <option value="All" disabled selected>Select type</option>
+                    @foreach (var item in Model.Books.Select(b => b.TypeName).Distinct().OrderBy(x => x))
+                    {
+                        <option>@item</option>
+                    }
+                </select>
+            </div>
+        </th>
+        <th class="col-lg-3">
+            <div class="dropdown">
+                <select class="form-control" id="BookAuthor" name="BookAuthor" placeholder="Type">
+                    <option value="All" disabled selected>Select author surname</option>
+                    @foreach (var item in Model.Books.Select(a => a.AuthorName).Distinct().OrderBy(x => x))
+                    {
+                        <option>@item</option>
+                    }
+                </select>
+            </div>
+        </th>
+        <th class="col-lg-3">
+            <button type="button" class="btn btn-success" style="width: 180px" onclick="AuthFilter(); TypeFilter();">
+                <!--Can't filter simultaneously'-->
+                Search
+            </button>
+        </th>
+        <th class="col-lg-3">
+            <button type="button" class="btn btn-danger" style="width: 180px" onclick="clearAllFilters()">
+                Clear
+            </button>
+        </th>
+    </tr>
+</table>
+
+<table class="table" id="myTable">
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Author</th>
+        <th>Type</th>
+        <th>Page Count</th>
+        <th>Point</th>
+        <th>Status</th>
+    </tr>
+
+    @foreach (var item in Model.Books) 
+    {
+        <tr id="myTr">
+            <td>@item.BookID</td>
+            <td>@item.BookName</td>
+            <td>@item.AuthorName</td>
+            <td>@item.TypeName</td>
+            <td>@item.BookPageCount</td>
+            <td>@item.BookPoint</td>
+            <td>@item.BookStatus</td>
+            <td><button type="button" class="btn btn-info">@Html.ActionLink("View", "BookDetails", "Home", new { @class = "text-primary" , id = item.BookID }, null)</button></td>
+        </tr>
+    }
+</table>
+
+
+<script>
+    function searchFunction() {
+        // Search bookName
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    
+    function AuthFilter() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("BookAuthor");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[2];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+    }
+    function TypeFilter() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("BookType");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[3];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function clearAllFilters() {
+        document.getElementById("myInput").value = "";
+        document.getElementById("BookType").value = "All";
+        document.getElementById("BookAuthor").value = "All";
+        searchFunction();
+    }
+</script>
+
